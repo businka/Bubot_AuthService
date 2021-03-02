@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "Entry": "Sign in",
+    "Registration": "Sign up",
+    "SignIn": "Sign in",
+    "SignUp": "Sign up",
+    "Login": "Login",
+    "Password": "Password",
+    "byLogin": "With login",
+    "byCert": "With e-signature certificate"
+  },
+  "FirstName": "First name",
+  "Birthday": "Birthday",
+  "Gender": "Gender",
+  "Email": "Email",
+  "Phone": "Phone"
+}

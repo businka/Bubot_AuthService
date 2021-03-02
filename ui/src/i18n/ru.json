@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "Entry": "Вход",
+    "Registration": "Регистрация",
+    "SignIn": "Войти",
+    "SignUp": "Зарегистрироваться",
+    "Login": "Логин",
+    "Password": "Пароль",
+    "withLogin": "По логину",
+    "withCert": "По сертификату электронной подписи"
+  },
+  "FirstName": "First name",
+  "Birthday": "Birthday",
+  "Gender": "Gender",
+  "Email": "Email",
+  "Phone": "Phone"
+}

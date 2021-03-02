@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "Entry": "登入",
+    "Registration": "注册",
+    "SignIn": "登入",
+    "SignUp": "注册",
+    "Login":"",
+    "Password": ""
+  }
+}

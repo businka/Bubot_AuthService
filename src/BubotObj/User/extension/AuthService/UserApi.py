@@ -1,13 +1,15 @@
+import hashlib
+import os
+from base64 import b64encode, b64decode
+
 from aiohttp import web
 from bson.json_util import dumps
-from Bubot.Helpers.ExtException import ExtException, KeyNotFound, Unauthorized
-from Bubot.Helpers.Action import async_action
-from base64 import b64encode, b64decode
-import os
-import hashlib
-from BubotObj.User.extension.AuthService.User import User
-from BubotObj.User.UserApi import UserApi as BaseUserApi
+
+from Bubot.Helpers.ActionDecorator import async_action
+from Bubot.Helpers.ExtException import KeyNotFound, Unauthorized
 from BubotObj.Session.Session import Session
+from BubotObj.User.UserApi import UserApi as BaseUserApi
+from BubotObj.User.extension.AuthService.User import User
 
 
 class UserApi(BaseUserApi):

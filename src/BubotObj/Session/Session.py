@@ -1,10 +1,12 @@
-from Bubot.Core.DocumentObj import DocumentObj
+from datetime import datetime
+
+from aiohttp_session import get_session, new_session
 from bson import ObjectId
 from bson.errors import InvalidId
-from datetime import datetime
-from Bubot.Helpers.Action import async_action
+
+from Bubot.Core.DocumentObj import DocumentObj
+from Bubot.Helpers.ActionDecorator import async_action
 from Bubot.Helpers.ExtException import ExtException, KeyNotFound
-from aiohttp_session import get_session, new_session
 
 
 class Session(DocumentObj):

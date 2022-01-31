@@ -1,7 +1,7 @@
-from BubotObj.User.User import User as BaseUser
-from Bubot.Helpers.Action import async_action
+from Bubot.Helpers.ActionDecorator import async_action
 from Bubot.Helpers.ExtException import ExtException, Unauthorized
 from Bubot.Helpers.Helper import ArrayHelper
+from BubotObj.User.User import User as BaseUser
 
 
 class User(BaseUser):
@@ -39,7 +39,7 @@ class User(BaseUser):
             limit=1
         ))
         if res:
-            raise ExtException('Такой пользователь уже зарегистрирован')
+            raise ExtException(message='Такой пользователь уже зарегистрирован')
         if user_id:
             try:
                 action.add_stat(await self.find_by_id(user_id, projection={'_id': 1, 'auth': 1}))

@@ -1,9 +1,11 @@
-import unittest
 import datetime
-from BubotObj.User.User import User
-from Bubot.Helpers.Helper import async_test
+import unittest
+
 from src.Bubot.Helpers.Сryptography.Certificate import Cert
+
 from Bubot.Core.DataBase.Mongo import Mongo as Storage
+from Bubot.Helpers.Helper import async_test
+from BubotObj.User.User import User
 
 
 class TestUser(unittest.TestCase):
@@ -43,10 +45,8 @@ class TestUser(unittest.TestCase):
 
     @async_test
     async def test_create(self):
-
         storage = Storage.connect()
         user = User(storage)
         cert = Cert(data=self.cert_org)
         await user.find_by_cert(cert, True)
         pass
-

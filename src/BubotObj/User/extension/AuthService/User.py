@@ -54,11 +54,10 @@ class User(BaseUser):
             res = action.add_stat(await self.update())
 
     @async_action
-    async def find_user_by_auth(self, _type, _id, **kwargs):
-        action = kwargs["_action"]
-        self.add_projection(kwargs)
-        kwargs['projection']['auth'] = True
-        res = action.add_stat(await self.query(
+    async def find_user_by_auth(self, _type, _id, *, _action=None, **kwargs):
+        # self.add_projection(kwargs)
+        # kwargs['projection']['auth'] = True
+        res = _action.add_stat(await self.query(
             filter={
                 'auth.type': _type,
                 'auth.id': _id,
@@ -68,7 +67,7 @@ class User(BaseUser):
         bad_password = Unauthorized()
         if not res:
             raise bad_password
-        i = ArrayHelper.find(res[0]['auth'], _type, 'type')
+        i = ArrayHelper.find_by_key(res[0]['auth'], _type, 'type')
         if i < 0:
             raise bad_password
         user_data = res[0]

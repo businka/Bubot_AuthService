@@ -2,18 +2,18 @@
 // import { get_user } from '../BubotCore/components/Session/session'
 // import CertSelect from '../BubotCore/components/Cert/CertSelect'
 // import cades from '../BubotCore/components/Cert/cades.mixin'
-import { getUrlParam, navigate } from '../BubotCore/helpers/UrlParam'
+import {UrlParam, navigate} from '../Helpers/UrlParam'
 
 export default {
   name: 'Auth',
   components: {
     'LangSelector': () => import('../BubotCore/components/Simple/LangSelector'),
-    'AuthWithPassword': () => import('../components/SignInByPassword'),
-    'AuthWithCert': () => import('../components/SignInByCert'),
-    'AuthWithOAuth': () => import('../components/SignInByOAuth'),
-    'RegWithPassword': () => import('../components/SignUpByPassword'),
-    'RegWithCert': () => import('../components/SignUpByCert'),
-    'RegWithOAuth': () => import('../components/SignUpByOAuth'),
+    'AuthWithPassword': () => import('./SignInByPassword'),
+    'AuthWithCert': () => import('./SignInByCert'),
+    'AuthWithOAuth': () => import('./SignInByOAuth'),
+    'RegWithPassword': () => import('./SignUpByPassword'),
+    'RegWithCert': () => import('./SignUpByCert'),
+    'RegWithOAuth': () => import('./SignUpByOAuth'),
     'CurrentUser': () => import('../BubotCore/components/Session/CurrentUserInToolbar')
   },
   // mixins: [cades],
@@ -82,7 +82,6 @@ export default {
         }
       },
       cookie: null,
-      redirect: getUrlParam('redirect')
     }
   },
 
@@ -123,7 +122,9 @@ export default {
   // },
   methods: {
     async onAuth () {
-      if (this.redirect)
+      const urlParam = new UrlParam()
+      const redirect = urlParam.get('redirect')
+      if (redirect)
         navigate(this.redirect)
       await this.$store.dispatch('Session/signIn', null, { root: true })
     }

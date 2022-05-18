@@ -19,7 +19,7 @@ class UserApi(BaseUserApi):
     extension = True
 
     @async_action
-    async def api_sign_in_by_password(self, view, **kwargs):
+    async def public_api_sign_in_by_password(self, view, **kwargs):
         action = kwargs['_action']
         try:
             login = view.data['login']
@@ -43,7 +43,7 @@ class UserApi(BaseUserApi):
         return action
 
     @async_action
-    async def api_sign_up_by_password(self, view, **kwargs):
+    async def public_api_sign_up_by_password(self, view, **kwargs):
         action = kwargs['_action']
         try:
             login = view.data['login']
@@ -70,7 +70,7 @@ class UserApi(BaseUserApi):
         return salt + hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
 
     @async_action
-    async def api_read_session_info(self, view, **kwargs):
+    async def public_api_read_session_info(self, view, **kwargs):
         action = kwargs['_action']
         try:
             user_link = view.session.get('user')

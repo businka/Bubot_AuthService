@@ -1,10 +1,10 @@
 <script>
-import buxios from '../BubotCore/helpers/buxios'
+import buxios from '../Helpers/buxios'
 
 export default {
   name: 'SignUpByPassword',
   components: {
-    'ExtExceotion': () => import('../BubotCore/components/Simple/ExtException'),
+    'ExtException': () => import('../BubotCore/components/Simple/ExtException'),
   },
   props: ['mode', 'active'],
   data () {
@@ -32,7 +32,7 @@ export default {
         }
         const data = `login=${this.login}&password=${this.password}`
         this.error = null
-        const response = await buxios.post('/api/AuthService/User/sign_up_by_password', data, config)
+        const response = await buxios.post('/public_api/AuthService/User/sign_up_by_password', data, config)
         this.$emit('auth', response.data)
       } catch (err) {
         this.error = err
@@ -89,13 +89,13 @@ export default {
       </v-card-actions>
     </v-form>
     <v-row
-      align="center"
-      justify="center"
+        align="center"
+        justify="center"
     >
       <p
-        class="red--text caption"
+          class="red--text caption pt-2"
       >
-        <ext-exceotion :error="error"/>
+        <ext-exception :value="error"/>
       </p>
     </v-row>
   </v-card>

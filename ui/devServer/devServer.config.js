@@ -8,6 +8,9 @@ const config = {
     '/api': {
       target: 'http://localhost'
     },
+    '/public_api': {
+      target: 'http://localhost'
+    },
     '/i18n': {
       target: 'http://localhost'
     },

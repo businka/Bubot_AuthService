@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: () => import('../views/Auth')
+    component: () => import('../components/Auth')
   },
   // {
   //   path: '/login',

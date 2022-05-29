@@ -34,7 +34,7 @@ class User(BaseUser):
         session = kwargs.get('session', {})
         user_id = session.get('user')
         res = action.add_stat(await self.query(
-            filter={'auth.type': data['type'], 'auth.id': data['id']},
+            where={'auth.type': data['type'], 'auth.id': data['id']},
             projection={'_id': 1, 'auth': 1},
             limit=1
         ))
@@ -58,7 +58,7 @@ class User(BaseUser):
         # self.add_projection(kwargs)
         # kwargs['projection']['auth'] = True
         res = _action.add_stat(await self.query(
-            filter={
+            where={
                 'auth.type': _type,
                 'auth.id': _id,
             },

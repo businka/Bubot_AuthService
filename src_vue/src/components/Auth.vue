@@ -2,7 +2,7 @@
 // import { get_user } from '../BubotCore/components/Session/session'
 // import CertSelect from '../BubotCore/components/Cert/CertSelect'
 // import cades from '../BubotCore/components/Cert/cades.mixin'
-import {UrlParam, navigate} from '../Helpers/UrlParam'
+import UrlParam, {navigate} from '../Helpers/UrlParam'
 
 export default {
   name: 'Auth',
@@ -125,7 +125,7 @@ export default {
       const urlParam = new UrlParam()
       const redirect = urlParam.get('redirect')
       if (redirect)
-        navigate(this.redirect)
+        navigate(redirect)
       await this.$store.dispatch('Session/signIn', null, { root: true })
     }
   }

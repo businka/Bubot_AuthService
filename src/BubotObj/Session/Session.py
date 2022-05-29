@@ -28,12 +28,8 @@ class Session(DocumentObj):
         _session = await get_session(view.request)
         if not _session or not _session.identity:  # если авторизация происходит под чужой живой сессией грохаем её
             raise KeyNotFound(detail='session')
-        try:
-            session_id = ObjectId(_session.identity)
-        except InvalidId:
-            raise KeyNotFound(detail='Session ID not in BSON ObjectId')
         self = cls(view.storage)
-        await action.add_stat(self.find_by_id(session_id))
+        action.add_stat(await self.find_by_id(_session.identity, _form=None))
         return action.set_end(self)
 
     @classmethod
@@ -43,14 +39,12 @@ class Session(DocumentObj):
         try:
             old_session = action.add_stat(await cls.init_from_request(view))
             if not old_session.data['end']:
-                if user.get_link()['_ref'] == old_session.data['user']['_ref']:
+                if user.get_link()['_id'] == old_session.data['user']['_id']:
                     return old_session
                 action.add_stat(await old_session.close())
-        except ExtException as err:
-            if err.code == 9010 or err.code == 9011:  # нет сессии или идентификатор не ObjectId
-                pass
-            else:
-                raise ExtException(parent=err)
+        except KeyNotFound:
+            pass
+
         self = cls(view.storage)
 
         self.data = {

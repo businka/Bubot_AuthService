@@ -78,7 +78,7 @@ class UserApi(BaseUserApi):
                 return web.json_response({"session": view.session.identity})
             # user = action.add_stat(self.handler.init_by_ref(user_link, lang=view.lang, form='CurrentUser'))
             user = User(view.storage, lang=view.lang, form='CurrentUser')
-            action.add_stat(await user.find_by_link(user_link))
+            action.add_stat(await user.find_by_id(user_link['_id'], _form=None))
             result = {
                 "session": view.session.identity,
                 "user": view.session.get('user'),

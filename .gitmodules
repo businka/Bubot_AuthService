@@ -1,0 +1,6 @@
+[submodule "src_vue/src/Helpers"]
+	path = src_vue/src/Helpers
+	url = https://github.com/businka/js_helpers.git
+[submodule "src_vue/src/BubotCore"]
+	path = src_vue/src/BubotCore
+	url = https://github.com/businka/vuetify_bubot_core.git

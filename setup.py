@@ -29,6 +29,5 @@ setuptools.setup(
     zip_safe=False,
     install_requires=[
         'Bubot_WebServer'
-        'Bubot_Helper>=0.0.2'
     ]
 )

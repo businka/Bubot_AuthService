@@ -1,25 +1,59 @@
 import urllib.parse
-from aiohttp import FormData
-from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
+
+from Bubot.Core.DataBase.Mongo import Mongo as Storage
+from Bubot.Helpers.ExtException import Unauthorized
 from BubotObj.OcfDevice.subtype.WebServer.WebServer import WebServer
+from BubotObj.User.extension.AuthService.User import User
+from aiohttp import FormData
+from aiohttp.test_utils import AioHTTPTestCase
 
 
 class TestAuthByPassword(AioHTTPTestCase):
+    test_login = 'test_add_password'
+    test_password = 'password'
 
     async def get_application(self):
+        self.user = User(Storage.connect())
         device = WebServer.init_from_file()
         app = await device.run_web_server()
-        return app
+        return app.result
 
-    # the unittest_run_loop decorator can be used in tandem with
-    # the AioHTTPTestCase to simplify running
-    # tests that are asynchronous
-    @unittest_run_loop
-    async def test_sign_in_by_password_good_password(self):
-        param = FormData({'login': 'test_add_password', 'password': 'password'})
+    async def delete_user_by_login(self, login):
+        await self.user.find_user_by_auth('password', login)
+        await self.user.delete_one()
+
+    async def test_sign_up_by_password(self):
+        try:
+            await self.delete_user_by_login(self.test_login)
+        except Unauthorized:
+            pass
+
+        data = FormData({'login': self.test_login, 'password': self.test_password})
         resp = await self.client.request(
             "POST",
-            "/api/AuthService/User/sign_in_by_password",
+            "/public_api/AuthService/User/sign_up_by_password",
+            data=data
+        )
+        resp_data = await resp.json()
+        self.assertEqual(200, resp.status, 'response status')
+
+        # повторный вызов должен вернуть исключение что пользователь уже зарегистрирован
+
+        data = FormData({'login': self.test_login, 'password': self.test_password})
+        resp = await self.client.request(
+            "POST",
+            "/public_api/AuthService/User/sign_up_by_password",
+            data=data
+        )
+        resp_data = await resp.json()
+        self.assertEqual(500, resp.status, 'response status')
+        self.assertEqual(resp_data['message'], 'Такой пользователь уже зарегистрирован', 'error_message')
+
+    async def test_sign_in_by_password_good_password(self):
+        param = FormData({'login': self.test_login, 'password': self.test_password})
+        resp = await self.client.request(
+            "POST",
+            "/public_api/AuthService/User/sign_in_by_password",
             data=param
         )
         if resp.status != 200:
@@ -34,7 +68,7 @@ class TestAuthByPassword(AioHTTPTestCase):
 
         resp = await self.client.request(
             "POST",
-            "/api/AuthService/User/sign_in_by_password",
+            "/public_api/AuthService/User/sign_in_by_password",
             data=param
         )
 
@@ -64,28 +98,16 @@ class TestAuthByPassword(AioHTTPTestCase):
         self.assertEqual(200, resp.status, 'response status')
         self.assertEqual({}, data3)
 
-    @unittest_run_loop
-    async def test_add_password(self):
-        data = FormData({'login': 'test_add_password', 'password': 'password'})
-        resp = await self.client.request(
-            "POST",
-            "/api/AuthService/User/sign_up_by_password",
-            data=data
-        )
-        print(await resp.text())
-        self.assertEqual(200, resp.status, 'response status')
-
-    @unittest_run_loop
     async def test_get_current_user(self):
-        data = FormData({'login': 'test_add_password', 'password': 'password'})
+        data = FormData({'login': self.test_login, 'password': self.test_password})
         resp = await self.client.request(
             "POST",
-            "/api/AuthService/User/auth_by_password",
+            "/public_api/AuthService/User/auth_by_password",
             data=data
         )
         resp = await self.client.request(
             "GET",
-            "/api/AuthService/User/current_user",
+            "/public_api/AuthService/User/read_session_info",
         )
         print(await resp.text())
         self.assertEqual(200, resp.status, 'response status')

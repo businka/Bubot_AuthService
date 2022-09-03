@@ -44,7 +44,7 @@ class AuthServiceApi(web.View):
             response.headers['Stat'] = dumps(_action.stat, ensure_ascii=True)
             return response
         except ExtException as err:
-            return web.json_response(err.to_dict(), status=err.get_http_code())
+            return web.json_response(err.to_dict(), status=err.http_code)
         except Exception as err:
             return web.HTTPInternalServerError(text=str(err))
 

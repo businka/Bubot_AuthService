@@ -6,50 +6,59 @@ from BubotObj.OcfDevice.subtype.WebServer.WebServer import WebServer
 from BubotObj.User.extension.AuthService.User import User
 from aiohttp import FormData
 from aiohttp.test_utils import AioHTTPTestCase
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class TestAuthByPassword(AioHTTPTestCase):
     test_login = 'test_add_password'
     test_password = 'password'
 
+    # async def asyncSetUp(self) -> None:
+    #
     async def get_application(self):
-        self.user = User(Storage.connect())
-        device = WebServer.init_from_file()
-        app = await device.run_web_server()
+        self.device = WebServer.init_from_file()
+        app = await self.device.run_web_server()
+        self.storage = self.device.storage
+        self.user = User(self.storage)
         return app.result
+
+    async def tearDownAsync(self):
+        await self.client.close()
+        # self.storage.close()
+        await self.device.on_stopped()
 
     async def delete_user_by_login(self, login):
         await self.user.find_user_by_auth('password', login)
         await self.user.delete_one()
+
+    async def create_test_user(self):
+        data = FormData({'login': self.test_login, 'password': self.test_password})
+        resp = await self.client.request(
+            "POST",
+            "/public_api/AuthService/User/sign_up_by_password",
+            data=data
+        )
+        resp_data = await resp.json()
+        return resp, resp_data
 
     async def test_sign_up_by_password(self):
         try:
             await self.delete_user_by_login(self.test_login)
         except Unauthorized:
             pass
-
-        data = FormData({'login': self.test_login, 'password': self.test_password})
-        resp = await self.client.request(
-            "POST",
-            "/public_api/AuthService/User/sign_up_by_password",
-            data=data
-        )
-        resp_data = await resp.json()
+        resp, resp_data = await self.create_test_user()
         self.assertEqual(200, resp.status, 'response status')
 
         # повторный вызов должен вернуть исключение что пользователь уже зарегистрирован
 
-        data = FormData({'login': self.test_login, 'password': self.test_password})
-        resp = await self.client.request(
-            "POST",
-            "/public_api/AuthService/User/sign_up_by_password",
-            data=data
-        )
-        resp_data = await resp.json()
+        resp, resp_data = await self.create_test_user()
         self.assertEqual(500, resp.status, 'response status')
         self.assertEqual(resp_data['message'], 'Такой пользователь уже зарегистрирован', 'error_message')
 
     async def test_sign_in_by_password_good_password(self):
+        resp, resp_data = await self.create_test_user()
         param = FormData({'login': self.test_login, 'password': self.test_password})
         resp = await self.client.request(
             "POST",
@@ -60,7 +69,8 @@ class TestAuthByPassword(AioHTTPTestCase):
             print(await resp.text())
         self.assertEqual(200, resp.status, 'response status')
         set_cookie = resp.headers.get('Set-Cookie')
-        session = urllib.parse.unquote(set_cookie).split(';')
+        set_cookie = urllib.parse.unquote(set_cookie)
+        session = set_cookie.split(';')
         self.assertEqual('session', session[0][:7], 'set session')
         session = session[0][8:]
         data = await resp.json()

@@ -7,7 +7,7 @@
     "Login":"",
     "Password": ""
   },
-  "Error": {
+  "ErrorMsg": {
     "Bad login or password": "登录名或密码错误",
     "Unknown error": "未知错误"
   }

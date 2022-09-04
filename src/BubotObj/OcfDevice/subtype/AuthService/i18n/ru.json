@@ -10,7 +10,7 @@
     "withPassword": "По паролю",
     "withCert": "По сертификату электронной подписи"
   },
-  "Error": {
+  "ErrorMsg": {
     "Bad login or password": "Неправильный логин или пароль",
     "Unknown error": "Неизвестная ошибка"
   },

@@ -10,7 +10,7 @@
     "withPassword": "With password",
     "withCert": "With e-signature certificate"
   },
-  "Error": {
+  "ErrorMsg": {
     "Bad login or password": "Bad login or password",
     "Unknown error": "Unknown error"
   },

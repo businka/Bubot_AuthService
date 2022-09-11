@@ -38,9 +38,6 @@ export default {
         this.error = err.toDict();
       }
       return false
-    },
-    signUp: function () {
-
     }
   }
 }

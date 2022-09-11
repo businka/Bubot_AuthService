@@ -9,5 +9,5 @@ class AuthService(Device):
 
     def add_route(self, app):
         path_device = os.path.dirname(self.file)
-        # app.router.add_route('*', '/api/auth/{action}', AuthServiceApi)
-        app.router.add_static(f'/ui/{self.__class__.__name__}/', f'{path_device}/static/ui')
+        app.router.add_static(f'/{self.__class__.__name__}/ui/', f'{path_device}/static/ui')
+        app.router.add_static(f'/{self.__class__.__name__}/i18n/', f'{self.path}/i18n')

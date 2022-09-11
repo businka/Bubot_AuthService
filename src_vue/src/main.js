@@ -4,7 +4,6 @@ import vuetify from './BubotCore/plugins/vuetify';
 import './BubotCore/plugins/cookies';
 import store from './store'
 // import './BubotCore/plugins/ws'
-// import { i18n } from './BubotCore/plugins/i18n'
 import { i18n, loadLanguageAsync } from './BubotCore/plugins/i18n'
 import router from './router'
 // import './BubotCore/AppComponents'

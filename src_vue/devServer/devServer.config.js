@@ -5,18 +5,18 @@ const config = {
   port: 8081,
   open: false, // opens browser window automatically
   proxy: {
-    '/api': {
-      target: 'http://localhost'
+    '/AuthService/api/': {
+      target: 'http://localhost:8080'
     },
-    '/public_api': {
-      target: 'http://localhost'
+    '/AuthService/public_api/': {
+      target: 'http://localhost:8080'
     },
-    '/i18n': {
-      target: 'http://localhost'
+    '/AuthService/i18n/': {
+      target: 'http://localhost:8080'
     },
-    // '/form': {
-    //   target: 'http://localhost'
-    // },
+    '/AuthService/form/': {
+      target: 'http://localhost:8080'
+    },
     // '/auth': {
     //   target: 'http://localhost:8081'
     // },

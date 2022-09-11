@@ -32,7 +32,7 @@ export default {
         }
         const data = `login=${this.login}&password=${this.password}`
         this.error = null
-        const response = await buxios.post('/public_api/AuthService/User/sign_in_by_password', data, config)
+        const response = await buxios.post('/AuthService/public_api/User/sign_in_by_password', data, config)
         this.$emit('auth', response.data)
       } catch (err) {
         this.error = err.toDict();

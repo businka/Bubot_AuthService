@@ -17,17 +17,18 @@ const config = {
     '/AuthService/form/': {
       target: 'http://localhost:8080'
     },
+    '/AuthService/ws': {
+      target: 'ws://localhost',
+      changeOrigin: true,
+      ws: true
+    },
     // '/auth': {
     //   target: 'http://localhost:8081'
     // },
     // '/jr': {
     //   target: 'http://localhost:8081'
     // },
-    // '/ws': {
-    //   target: 'ws://localhost',
-    //   changeOrigin: true,
-    //   ws: true
-    // }
+
   },
   // before: function (app, server) {
   //   require('./core')(app, server)

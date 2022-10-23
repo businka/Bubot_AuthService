@@ -1,12 +1,13 @@
 import hashlib
 import os
 from base64 import b64encode, b64decode
+from datetime import datetime, timedelta
 
 from aiohttp import web
 from bson.json_util import dumps
 
 from Bubot.Helpers.ActionDecorator import async_action
-from Bubot.Helpers.ExtException import KeyNotFound, Unauthorized
+from Bubot.Helpers.ExtException import KeyNotFound, Unauthorized, AccessDenied
 from BubotObj.Session.Session import Session
 from BubotObj.User.UserApi import UserApi as BaseUserApi
 from BubotObj.User.extension.AuthService.User import User
@@ -19,28 +20,39 @@ class UserApi(BaseUserApi):
     extension = True
 
     @async_action
-    async def public_api_sign_in_by_password(self, view, **kwargs):
-        action = kwargs['_action']
+    async def public_api_sign_in_by_password(self, view, *, _action=None, **kwargs):
+        current_datetime = datetime.now()
         try:
             login = view.data['login']
             password = view.data['password']
         except KeyError as err:
             raise KeyNotFound(detail=err)
         user = User(view.storage, lang=view.lang, form='CurrentUser')
-        _auth = action.add_stat(await user.find_user_by_auth('password', login))
-        bad_password = Unauthorized()
-
+        _auth = _action.add_stat(await user.find_user_by_auth('password', login))
+        _auth['bad_attempts'] = _auth.get('bad_attempts', 0)
+        if _auth['bad_attempts']:
+            next_attempt: datetime = _auth.get('next_attempt')
+            if next_attempt and current_datetime < next_attempt:
+                time_to_text_attempt = str(next_attempt - current_datetime).split('.')
+                raise AccessDenied(message='Bad last login or password', detail=f"{time_to_text_attempt[0]}")
+        bad_password = Unauthorized(message='Bad login or password')
         _password = b64decode(_auth['password'])
         salt = _password[:32]
         if _auth['id'] != login or _password != self._generate_password_hash(salt, password):
+            _auth['bad_attempts'] += 1
+            _auth['next_attempt'] = current_datetime + timedelta(seconds=30 * (_auth['bad_attempts'] - 1))
+            _action.add_stat(await user.update_auth(_auth))
             raise bad_password
         # _session = kwargs['session']
-        session = action.add_stat(await Session.create_from_request(user, view))
-        action.set_end(self.response.json_response({
+        _auth['bad_attempts'] = 0
+        _auth['next_attempt'] = current_datetime
+        _action.add_stat(await user.update_auth(_auth))
+        session = _action.add_stat(await Session.create_from_request(user, view))
+        _action.set_end(self.response.json_response({
             'session': str(session.obj_id),
             'user': user.data
         }))
-        return action
+        return _action
 
     @async_action
     async def public_api_sign_up_by_password(self, view, **kwargs):

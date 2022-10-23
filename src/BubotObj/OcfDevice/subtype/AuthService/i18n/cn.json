@@ -9,6 +9,7 @@
   },
   "ErrorMsg": {
     "Bad login or password": "登录名或密码错误",
+    "Bad last login or password": "上次登录名或密码错误。 访问被阻止",
     "Unknown error": "未知错误"
   }
 }

@@ -18,56 +18,56 @@ class AuthServiceApi(DeviceApi):
                     # {
                     #     "id": 'Cert',
                     # },
-                    {
-                        "id": 'OAuth',
-                        "services": [
-                            {
-                                "id": 'Apple'
-                            },
-                            {
-                                "id": 'Facebook'
-                            },
-                            {
-                                "id": 'VK'
-                            },
-                            {
-                                "id": 'Saby'
-                            },
-                            {
-                                "id": 'Yandex'
-                            },
-                            {
-                                "id": 'Google'
-                            },
-                            {
-                                "id": 'Odnoklassniki'
-                            },
-                            {
-                                "id": 'MailRu'
-                            },
-                        ]
-                    }
+                    # {
+                    #     "id": 'OAuth',
+                    #     "services": [
+                    #         {
+                    #             "id": 'Apple'
+                    #         },
+                    #         {
+                    #             "id": 'Facebook'
+                    #         },
+                    #         {
+                    #             "id": 'VK'
+                    #         },
+                    #         {
+                    #             "id": 'Saby'
+                    #         },
+                    #         {
+                    #             "id": 'Yandex'
+                    #         },
+                    #         {
+                    #             "id": 'Google'
+                    #         },
+                    #         {
+                    #             "id": 'Odnoklassniki'
+                    #         },
+                    #         {
+                    #             "id": 'MailRu'
+                    #         },
+                    #     ]
+                    # }
                 ],
                 "active": 0
             },
-            'Reg': {
-                "methods": [
-                    {
-                        "id": 'Password',
-                    },
-                    # {
-                    #     "id": 'Cert',
-                    # },
-                    {
-                        "id": 'OAuth',
-                        "services": [
-                            {
-                                "id": 'Saby'
-                            }
-                        ]
-                    }
-                ],
-                "active": 0
-            }
+            # 'Reg': {
+            #     "methods": [
+            #         {
+            #             "id": 'Password',
+            #         },
+            #         # {
+            #         #     "id": 'Cert',
+            #         # },
+            #         # {
+            #         #     "id": 'OAuth',
+            #         #     "services": [
+            #         #         {
+            #         #             "id": 'Saby'
+            #         #         }
+            #         #     ]
+            #         # }
+            #     ],
+            #     "active": 0
+            # }
         }
         return self.response.json_response(result)

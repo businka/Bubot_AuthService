@@ -12,6 +12,8 @@
   },
   "ErrorMsg": {
     "Bad login or password": "Неправильный логин или пароль",
+    "Bad last login or password": "Неправильный логин или пароль. Доступ заблокирован на",
+    "Access denied": "Доступ запрещен",
     "Unknown error": "Неизвестная ошибка"
   },
   "FirstName": "First name",

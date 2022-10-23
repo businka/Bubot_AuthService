@@ -12,6 +12,7 @@
   },
   "ErrorMsg": {
     "Bad login or password": "Bad login or password",
+    "Bad last login or password": "Bad last login or password. Access blocked for",
     "Unknown error": "Unknown error"
   },
   "FirstName": "First name",

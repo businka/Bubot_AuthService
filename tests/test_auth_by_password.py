@@ -1,7 +1,7 @@
 import urllib.parse
 
 from Bubot.Core.DataBase.Mongo import Mongo as Storage
-from Bubot.Helpers.ExtException import Unauthorized
+from Bubot.Helpers.ExtException import ExtException, Unauthorized, AccessDenied
 from BubotObj.OcfDevice.subtype.WebServer.WebServer import WebServer
 from BubotObj.User.extension.AuthService.User import User
 from aiohttp import FormData
@@ -19,6 +19,7 @@ class TestAuthByPassword(AioHTTPTestCase):
     #
     async def get_application(self):
         self.device = WebServer.init_from_file()
+        self.device.log = self.device.get_logger()
         app = await self.device.run_web_server()
         self.storage = self.device.storage
         self.user = User(self.storage)
@@ -37,10 +38,22 @@ class TestAuthByPassword(AioHTTPTestCase):
         data = FormData({'login': self.test_login, 'password': self.test_password})
         resp = await self.client.request(
             "POST",
-            "/public_api/AuthService/User/sign_up_by_password",
+            "/AuthService/public_api/User/sign_up_by_password",
             data=data
         )
         resp_data = await resp.json()
+        return resp, resp_data
+
+    async def sign_in_by_password(self, login, password):
+        data = FormData({'login': login, 'password': password})
+        resp = await self.client.request(
+            "POST",
+            "/AuthService/public_api/User/sign_in_by_password",
+            data=data
+        )
+        resp_data = await resp.json()
+        if resp.status == 401:
+            raise ExtException(parent=resp_data)
         return resp, resp_data
 
     async def test_sign_up_by_password(self):
@@ -121,3 +134,24 @@ class TestAuthByPassword(AioHTTPTestCase):
         )
         print(await resp.text())
         self.assertEqual(200, resp.status, 'response status')
+
+    async def test_sign_in_by_password_bad_password(self):
+        try:
+            await self.delete_user_by_login(self.test_login)
+        except Unauthorized:
+            pass
+        resp, resp_data = await self.create_test_user()
+        try:
+            resp = await self.sign_in_by_password(self.test_login, 'bad')
+        except Unauthorized as err:
+            pass
+
+        try:
+            resp = await self.sign_in_by_password(self.test_login, 'bad')
+        except Unauthorized as err:
+            pass
+
+        try:
+            resp = await self.sign_in_by_password(self.test_login, 'bad')
+        except AccessDenied as err:
+            pass

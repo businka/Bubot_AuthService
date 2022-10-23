@@ -1,21 +1,21 @@
 <script>
 export default {
-  name: 'SignUpByOAuth',
-  components: {},
-  props: ['mode', 'active', 'params'],
-  data () {
-    return {
-      showPassword: false,
-      login: '',
-      password: '',
-      forgot: false,
-      rules: {
-        required: value => !!value || 'Required.',
-        min: v => v.length >= 8 || 'Min 8 characters',
-        // emailMatch: () => ('The email and password you entered don\'t match'),
-      },
-    }
-  },
+    name: 'SignUpByOAuth',
+    components: {},
+    props: ['mode', 'active', 'params'],
+    data() {
+        return {
+            showPassword: false,
+            login: '',
+            password: '',
+            forgot: false,
+            rules: {
+                required: value => !!value || 'Required.',
+                min: v => v.length >= 8 || 'Min 8 characters',
+                // emailMatch: () => ('The email and password you entered don\'t match'),
+            },
+        }
+    },
 }
 </script>
 
@@ -28,8 +28,7 @@ export default {
       v-for="service in params.services"
       :key="service.id"
       :class="`oauth-icon oauth-icon-position-${service.id}`"
-    >
-    </div>
+    />
   </v-card>
 </template>
 

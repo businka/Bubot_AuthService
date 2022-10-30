@@ -9,11 +9,11 @@ from bson.json_util import dumps
 from Bubot.Helpers.ActionDecorator import async_action
 from Bubot.Helpers.ExtException import KeyNotFound, Unauthorized, AccessDenied
 from BubotObj.Session.Session import Session
-from BubotObj.User.UserApi import UserApi as BaseUserApi
-from BubotObj.User.extension.AuthService.User import User
+from Bubot.Core.ObjApi import ObjApi
+from BubotObj.User.User import User
 
 
-class UserApi(BaseUserApi):
+class UserApi(ObjApi):
     name = "User"
     handler = User
     file = __file__

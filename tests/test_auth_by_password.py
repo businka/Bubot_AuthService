@@ -3,7 +3,7 @@ import urllib.parse
 from Bubot.Core.DataBase.Mongo import Mongo as Storage
 from Bubot.Helpers.ExtException import ExtException, Unauthorized, AccessDenied
 from BubotObj.OcfDevice.subtype.WebServer.WebServer import WebServer
-from BubotObj.User.extension.AuthService.User import User
+from BubotObj.User.User import User
 from aiohttp import FormData
 from aiohttp.test_utils import AioHTTPTestCase
 import logging
@@ -155,3 +155,13 @@ class TestAuthByPassword(AioHTTPTestCase):
             resp = await self.sign_in_by_password(self.test_login, 'bad')
         except AccessDenied as err:
             pass
+
+    async def test_create_user(self):
+        data = FormData({'login': 'x', 'password': 'x!'})
+        resp = await self.client.request(
+            "POST",
+            "/AuthService/public_api/User/sign_up_by_password",
+            data=data
+        )
+        resp_data = await resp.json()
+        return resp, resp_data

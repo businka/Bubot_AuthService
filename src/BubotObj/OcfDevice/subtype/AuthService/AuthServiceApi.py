@@ -1,7 +1,7 @@
 # from bubot.Helpers.Сryptography.SignedData import SignedData
 
 from Bubot.Helpers.ActionDecorator import async_action
-from BubotObj.OcfDevice.subtype.WebServer.ApiHelper import DeviceApi
+from Bubot.Core.ObjApi import DeviceApi
 
 
 # from bubot.Catalog.Account.Account import Account

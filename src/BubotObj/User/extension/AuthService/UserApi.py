@@ -3,14 +3,12 @@ import os
 from base64 import b64encode, b64decode
 from datetime import datetime, timedelta
 
-from aiohttp import web
-from bson.json_util import dumps
-
+from Bubot.Core.ObjApi import ObjApi
 from Bubot.Helpers.ActionDecorator import async_action
 from Bubot.Helpers.ExtException import KeyNotFound, Unauthorized, AccessDenied
 from BubotObj.Session.Session import Session
-from Bubot.Core.ObjApi import ObjApi
 from BubotObj.User.User import User
+from aiohttp import web
 
 
 class UserApi(ObjApi):
@@ -97,7 +95,7 @@ class UserApi(ObjApi):
                 "account": view.session.get('account'),
                 "accounts": user.data.get('account', [])
             }
-            return action.set_end(self.response.json_response(result, dumps=dumps))
+            return action.set_end(self.response.json_response(result))
             # login = view.data['login']
             # password = view.data['password']
         except KeyError as err:
@@ -107,7 +105,7 @@ class UserApi(ObjApi):
     async def api_sign_out(self, view, **kwargs):
         action = kwargs['_action']
         try:
-            session = action.add_stat(await Session.init_from_request(view))
+            session = action.add_stat(await Session.init_from_view(view))
             await session.close()
             view.session.invalidate()
         except KeyError:  # нет сессии

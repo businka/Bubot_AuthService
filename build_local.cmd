@@ -1,5 +1,3 @@
-py -m build
+python -m build
 
-py -m pip install -e .
-
-pause
+python -m pip install -e .

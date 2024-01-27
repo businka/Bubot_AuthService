@@ -1,5 +1,5 @@
 import setuptools
-from src.BubotObj.OcfDevice.subtype.AuthService import __version__
+from src.bubot_auth_service import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -28,7 +28,7 @@ setuptools.setup(
     python_requires='>=3.7',
     zip_safe=False,
     install_requires=[
-        'Bubot_WebServer>=0.1.12'
-        'Bubot_Core>=0.1.17'
+        'WebServer>=4.0.0',
+        'Bubot_Core>=4.0.0'
     ]
 )

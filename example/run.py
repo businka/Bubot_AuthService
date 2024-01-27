@@ -1,7 +1,7 @@
 import logging
 import os.path
 
-from BubotObj.OcfDevice.subtype.WebServer.WebServer import WebServer
+from buject.OcfDevice.subtype.WebServer.WebServer import WebServer
 
 logging.basicConfig(level=logging.INFO)
 

@@ -1,9 +1,9 @@
 import urllib.parse
 
-from Bubot.Core.DataBase.Mongo import Mongo as Storage
-from Bubot.Helpers.ExtException import ExtException, Unauthorized, AccessDenied
-from BubotObj.OcfDevice.subtype.WebServer.WebServer import WebServer
-from BubotObj.User.User import User
+from bubot.core.DataBase.Mongo import Mongo as Storage
+from bubot_helpers.ExtException import ExtException, Unauthorized, AccessDenied
+from buject.OcfDevice.subtype.WebServer.WebServer import WebServer
+from buject.User.User import User
 from aiohttp import FormData
 from aiohttp.test_utils import AioHTTPTestCase
 import logging

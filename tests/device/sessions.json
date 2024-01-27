@@ -1,0 +1,35 @@
+{
+  "3a179a54-3573-40ae-8daa-f04d2a778bdf": {
+    "created": 1667752295,
+    "session": {
+      "user": {
+        "_id": "ceaf1fd4-7797-40a1-ba53-dc228ebb005d",
+        "title": "razgovorov1"
+      },
+      "account": "Bubot"
+    },
+    "expire": 0
+  },
+  "ea92b5a3-62bc-49e2-bc16-d68ca721a600": {
+    "created": 1667752323,
+    "session": {
+      "user": {
+        "_id": "5e1bf7a7-462e-4141-bac1-d1275b3e862f",
+        "title": "komarov1"
+      },
+      "account": "Bubot"
+    },
+    "expire": 0
+  },
+  "d1f94b40-7f74-462c-8cb1-30e23f5f926d": {
+    "created": 1667753413,
+    "session": {
+      "user": {
+        "_id": "f89aae94-0064-41e3-8186-654e69f6ba93",
+        "title": "komarov1"
+      },
+      "account": "Bubot"
+    },
+    "expire": 0
+  }
+}

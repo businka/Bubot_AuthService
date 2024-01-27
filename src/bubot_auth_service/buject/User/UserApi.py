@@ -3,11 +3,11 @@ import os
 from base64 import b64encode, b64decode
 from datetime import datetime, timedelta
 
-from Bubot.Core.ObjApi import ObjApi
-from Bubot.Helpers.ActionDecorator import async_action
-from Bubot.Helpers.ExtException import KeyNotFound, Unauthorized, AccessDenied
-from BubotObj.Session.Session import Session
-from BubotObj.User.User import User
+from bubot.core.ObjApi import ObjApi
+from bubot_helpers.ActionDecorator import async_action
+from bubot_helpers.ExtException import KeyNotFound, Unauthorized, AccessDenied
+from bubot.buject.Session.Session import Session
+from bubot.buject.User.User import User
 from aiohttp import web
 
 
@@ -87,8 +87,10 @@ class UserApi(ObjApi):
             if not user_link:
                 return web.json_response({"session": view.session.identity})
             # user = action.add_stat(self.handler.init_by_ref(user_link, lang=view.lang, form='CurrentUser'))
+            user_id = user_link.get('_id')
             user = User(view.storage, lang=view.lang, form='CurrentUser')
-            action.add_stat(await user.find_by_id(user_link['_id'], _form=None))
+            if user_id:
+                user = action.add_stat(await user.find_by_id(user_link['_id'], _form=None))
             result = {
                 "session": view.session.identity,
                 "user": view.session.get('user'),

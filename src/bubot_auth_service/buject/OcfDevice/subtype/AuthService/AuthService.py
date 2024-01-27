@@ -1,6 +1,6 @@
 import os.path
 
-from BubotObj.OcfDevice.subtype.Device.Device import Device
+from bubot.buject.OcfDevice.subtype.Device.Device import Device
 
 
 class AuthService(Device):

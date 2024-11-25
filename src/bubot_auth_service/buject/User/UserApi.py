@@ -83,7 +83,7 @@ class UserApi(ObjApi):
     async def public_api_read_session_info(self, view, **kwargs):
         action = kwargs['_action']
         try:
-            user_link = view.session.get('user')
+            user_link = view.session.get('user_')
             if not user_link:
                 return web.json_response({"session": view.session.identity})
             # user = action.add_stat(self.handler.init_by_ref(user_link, lang=view.lang, form='CurrentUser'))
@@ -93,9 +93,9 @@ class UserApi(ObjApi):
                 user = action.add_stat(await user.find_by_id(user_link['_id'], _form=None))
             result = {
                 "session": view.session.identity,
-                "user": view.session.get('user'),
+                "user_": view.session.get('user_'),
                 "account": view.session.get('account'),
-                "accounts": user.data.get('account', [])
+                "accounts": user.data.get('accounts', [])
             }
             return action.set_end(self.response.json_response(result))
             # login = view.data['login']

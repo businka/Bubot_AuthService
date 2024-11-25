@@ -2,8 +2,8 @@ import urllib.parse
 
 from bubot.core.DataBase.Mongo import Mongo as Storage
 from bubot_helpers.ExtException import ExtException, Unauthorized, AccessDenied
-from buject.OcfDevice.subtype.WebServer.WebServer import WebServer
-from buject.User.User import User
+from bubot_webserver.buject.OcfDevice.subtype.WebServer.WebServer import WebServer
+from bubot.buject.User.User import User
 from aiohttp import FormData
 from aiohttp.test_utils import AioHTTPTestCase
 import logging
@@ -12,8 +12,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 class TestAuthByPassword(AioHTTPTestCase):
-    test_login = 'test_add_password'
-    test_password = 'password'
+    test_login = 'razgovorov'
+    test_password = ''
 
     # async def asyncSetUp(self) -> None:
     #

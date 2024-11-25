@@ -28,7 +28,7 @@ setuptools.setup(
     python_requires='>=3.7',
     zip_safe=False,
     install_requires=[
-        'Bubot_WebServer>=4.0.0',
+        'Bubot_WebServer>=4.0.4',
         'Bubot_Core>=4.0.0'
     ]
 )

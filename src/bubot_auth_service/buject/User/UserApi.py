@@ -1,8 +1,7 @@
 import hashlib
 import os
 from base64 import b64encode, b64decode
-from datetime import datetime, timedelta
-
+import datetime
 from bubot.core.ObjApi import ObjApi
 from bubot_helpers.ActionDecorator import async_action
 from bubot_helpers.ExtException import KeyNotFound, Unauthorized, AccessDenied
@@ -19,7 +18,7 @@ class UserApi(ObjApi):
 
     @async_action
     async def public_api_sign_in_by_password(self, view, *, _action=None, **kwargs):
-        current_datetime = datetime.now()
+        current_datetime = datetime.datetime.now(datetime.timezone.utc)
         try:
             login = view.data['login']
             password = view.data['password']
@@ -36,9 +35,9 @@ class UserApi(ObjApi):
         bad_password = Unauthorized(message='Bad login or password')
         _password = b64decode(_auth['password'])
         salt = _password[:32]
-        if _auth['id'] != login or _password != self._generate_password_hash(salt, password):
+        if _auth['id'] != login or _password != self.generate_password_hash(salt, password):
             _auth['bad_attempts'] += 1
-            _auth['next_attempt'] = current_datetime + timedelta(seconds=30 * (_auth['bad_attempts'] - 1))
+            _auth['next_attempt'] = current_datetime + datetime.timedelta(seconds=30 * (_auth['bad_attempts'] - 1))
             _action.add_stat(await user.update_auth(_auth))
             raise bad_password
         # _session = kwargs['session']
@@ -62,7 +61,7 @@ class UserApi(ObjApi):
             raise KeyNotFound(detail=err)
 
         salt = os.urandom(32)
-        password = b64encode(self._generate_password_hash(salt, password)).decode()
+        password = b64encode(self.generate_password_hash(salt, password)).decode()
 
         user = User(view.storage, lang=view.lang, form='CurrentUser')
         res = action.add_stat(await user.add_auth({
@@ -76,7 +75,7 @@ class UserApi(ObjApi):
         return self.response.json_response({'session': str(session.obj_id)})
 
     @staticmethod
-    def _generate_password_hash(salt, password):
+    def generate_password_hash(salt, password):
         return salt + hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
 
     @async_action

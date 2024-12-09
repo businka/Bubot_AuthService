@@ -25,7 +25,10 @@ class UserApi(ObjApi):
         except KeyError as err:
             raise KeyNotFound(detail=err)
         user = User(view.storage, lang=view.lang, form='CurrentUser')
-        _auth = _action.add_stat(await user.find_user_by_auth('password', login))
+        try:
+            _auth = _action.add_stat(await user.find_user_by_auth('password', login))
+        except Unauthorized:
+            raise AccessDenied(message='Bad login or password')
         _auth['bad_attempts'] = _auth.get('bad_attempts', 0)
         if _auth['bad_attempts']:
             next_attempt: datetime = _auth.get('next_attempt')

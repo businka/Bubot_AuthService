@@ -1,8 +1,0 @@
-{
-  "/oic/d": {
-    "di": "dc78c8e8-7f91-4aa2-a2f3-e2c5585aa54c"
-  },
-  "/oic/con": {
-    "storage_url": "mongodb://192.168.1.37:27017"
-  }
-}
